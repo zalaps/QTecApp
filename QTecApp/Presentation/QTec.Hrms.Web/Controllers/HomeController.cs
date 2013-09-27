@@ -13,7 +13,7 @@ namespace QTec.Hrms.Web.Controllers
 
         public string Index()
         {
-            return "Welcome to QTecApp!!!";
+            return "Welcome to QTecApp & Have a good Day!";
         }
 
     }

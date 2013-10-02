@@ -6,14 +6,18 @@ using System.Web.Mvc;
 
 namespace QTec.Hrms.Web.Controllers
 {
+    using System.Web.Mvc;
+
     public class HomeController : Controller
     {
         //
         // GET: /Home/
 
-        public string Index()
+
+        public ActionResult Index()
         {
-            return "Welcome to QTecApp & Have a good Day & weekend as well";
+
+            return this.View();
         }
 
     }

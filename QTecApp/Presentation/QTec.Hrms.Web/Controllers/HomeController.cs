@@ -7,8 +7,15 @@
         //
         // GET: /Home/
 
+<<<<<<< HEAD
         public ActionResult Index()
         {
+=======
+
+        public ActionResult Index()
+        {
+
+>>>>>>> goldytech-master
             return this.View();
         }
 

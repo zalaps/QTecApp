@@ -28,9 +28,16 @@ namespace QTec.Hrms.DataTier.Repositories
         /// <returns>true if exists else returns false</returns>
         public bool IsEmailDuplicate(string emailId)
         {
-            // TODO: Implement this method
-            return false;
+            return this.DbContext.Set<Employee>().Any(e => e.Email.Equals(emailId));
+        }
 
+        /// <summary>
+        /// Gets the employees with designation.
+        /// </summary>
+        /// <returns>IQueryable of Employees</returns>
+        public IQueryable<Employee> GetEmployeesWithDesignation()
+        {
+            return this.DbContext.Set<Employee>().Include("Designation");
         }
     }
 }

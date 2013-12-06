@@ -11,9 +11,14 @@ define(['app'], function (app) {
         $scope.employee;
         $scope.title = (employeeID > 0) ? 'Edit' : 'Add';
         $scope.buttonText = (employeeID > 0) ? 'Update' : 'Add';
+        $scope.firstName;
+        $scope.lastName;
+        $scope.companyemail;
         $scope.updateStatus = false;
         $scope.errorMessage = '';
         $scope.opened = false;
+        $scope.previousDate = '';
+        $scope.percentageDone = 0;
         $scope.dateOptions = {
             'year-format': "'yy'",
             'starting-day': 1
@@ -29,6 +34,15 @@ define(['app'], function (app) {
         function init() {
             if (employeeID > 0) {
                 dataService.getEmployee(employeeID).then(function (employee) {
+                    if (!angular.isObject(employee)) {
+                        alert("Invalid Employee");
+                        $location.path('/employees');
+                        return 0;
+                    }
+                    if (angular.isString(employee.data.exceptionMessage)) {
+                        $scope.errorMessage = 'Error occurred and it has been logged';
+                        return 0;
+                    }
                     $scope.employee = employee;
                 }, processError);
             } else {
@@ -39,7 +53,27 @@ define(['app'], function (app) {
             }
             getDesignations();
         }
+        $scope.updateDate = function (date) {
+            alert(date);
+        };
+        $scope.progress = function (percentDone) {
+            $scope.percentageDone = percentDone;
+        };
+         
+        $scope.done = function (files, data) {
 
+            $scope.percentageDone = 100;
+
+        };
+
+            $scope.error = function(files, type, msg) {
+                $scope.errorMessage = "Upload error: " + msg;
+
+            };
+            
+            $scope.uploadFinished = function (e, data) {
+                $scope.percentageDone = 100;
+            };
         function getDesignations() {
             dataService.getDesignations().then(function (designations) {
                 $scope.designations = designations;
@@ -52,7 +86,7 @@ define(['app'], function (app) {
 
         $scope.saveEmployee = function () {
             if ($scope.editForm.$valid) {
-                if (employeeID == 0) //comparing the query string of employeeID
+                if (employeeID === 0) //comparing the query string of employeeID
                 {
                     dataService.insertEmployee($scope.employee).then(processSuccess, processError);
                 }
@@ -96,6 +130,18 @@ define(['app'], function (app) {
             }, 3000);
         }
 
-    }]);
+            var getEmail = function() {
+                if (angular.isString($scope.firstName) && angular.isString($scope.lastName)) {
+                    $scope.companyemail = $scope.firstName + '.' + $scope.lastName + "@quipment.in";
+                    
+                } else {
+                    $scope.companyemail = null;
+                }
+            };
+
+            $scope.$watch('firstName', getEmail, true);
+            $scope.$watch('lastName', getEmail, true);
+
+        }]);
 
 });

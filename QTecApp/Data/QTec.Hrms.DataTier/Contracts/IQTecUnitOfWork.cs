@@ -26,6 +26,16 @@
         }
 
         /// <summary>
+        /// Gets the language repository.
+        /// </summary>
+        IRepository<Language> LanguageRepository
+        {
+            get;
+        }
+
+
+        IRepository<EmployeeLanguages> EmployeeLanguagesRepository { get; }
+        /// <summary>
         /// Commits the changes in database.
         /// </summary>
         void Commit();

@@ -3,7 +3,7 @@
         <header>
             <h3>{{title}} Employee</h3>
         </header>
-        <form name="editForm" novalidate>
+        <form name="editForm" novalidate enctype="multipart/form-data">
             <div>
                 
                 <div class="row">
@@ -22,7 +22,7 @@
                         First Name:
                     </div>
                     <div class="span10">
-                        <input type="text" name="firstName" data-ng-model="employee.firstName" required />
+                        <input type="text" name="firstName" data-ng-model="firstName" required />
                         <span class="errorMessage" ng-show="editForm.firstName.$dirty && editForm.firstName.$error.required">
                             First name is required
                         </span>
@@ -33,7 +33,7 @@
                         Last Name:
                     </div>
                     <div class="span10">
-                        <input type="text" data-ng-model="employee.lastName" required />
+                        <input type="text" data-ng-model="lastName" required />
                         <span class="errorMessage" ng-show="editForm.lastName.$dirty && editForm.lastName.$invalid">
                             Last name is required
                         </span>
@@ -65,12 +65,12 @@
                     </div>
                     <div class="span10">
                         <input type="text" name="email"
-                            data-ng-model="employee.email" 
-                            data-qtec-unique=""
+                            data-ng-model="companyemail" 
+                            @*data-qtec-unique=""*@
                             required /> 
-                        <span class="errorMessage" data-ng-show="editForm.email.$error.unique">
+                        @*<span class="errorMessage" data-ng-show="editForm.email.$error.unique">
                             Email already in use
-                        </span>
+                        </span>*@
                     </div>
                 </div>
                 <div class="row">
@@ -111,6 +111,14 @@
                     </div>
                 </div>
                 <div class="row">
+                    <div class="span2">
+                        Previous Employment:
+                    </div>
+                    <div class="span10">
+                        <input name="previousempdate" ng-model="$parent.previousDate" jqdatepicker close="updateDate(date)"/>
+                    </div>
+                </div>
+               <div class="row">
                     <div class="span12">
                         <button type="submit" class="btn btn-primary" data-ng-click="saveEmployee()" ng-disabled="editForm.$invalid">{{buttonText}}</button>
                         &nbsp;&nbsp;
@@ -126,6 +134,8 @@
                         <i class="icon-thumbs-down icon-white"></i>&nbsp;&nbsp;Error: {{ errorMessage }}
                     </div>
                 </div>
+                
+              
             </div>
         </form>
     </div>

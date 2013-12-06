@@ -10,6 +10,7 @@ namespace QTec.Hrms.Web.WebApi
     using System.Web;
     using QTec.Hrms.Business.Contracts;
     using QTec.Hrms.Models;
+    using QTec.Hrms.Web.ActionFilters;
 
     public class PersonalController : ApiController
     {
@@ -29,18 +30,33 @@ namespace QTec.Hrms.Web.WebApi
 
         [HttpGet]
         [Queryable]
+        [Cache(CacheExpiryDuration = 60)]
+        [ETag]
         public IQueryable<Employee> Employees()
         {
             var query = this.employeeManager.GetEmployees();
             var totalRecords = query.Count();
-            HttpContext.Current.Response.Headers.Add("X-InlineCount", totalRecords.ToString());
+          //  HttpContext.Current.Response.Headers.Add("X-InlineCount", totalRecords.ToString());
             return query;
         }
  
         [HttpGet]
-        public Employee EmployeeById(int id)
+        public HttpResponseMessage EmployeeById(int id)
         {
-            return this.employeeManager.GetEmployeeById(id);
+            try
+            {
+                var emp = this.employeeManager.GetEmployeeById(id);
+                if (emp !=null)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, emp);    
+                }
+                return this.Request.CreateResponse(HttpStatusCode.NotFound);
+            }
+            catch (Exception exception)
+            {
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exception);
+                
+            }
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ define(['app'], function (app) {
                 });                
         };
         employeeFactory.checkUniqueValue = function (value) {
-         return $http.get(serviceBase + 'IsEmailUnique?email=' + escape(value)).then(
+         return $http.get(serviceBase + 'IsEmailUnique? =' + escape(value)).then(
                 function (results) {
                     return results.data;
                 });
@@ -56,9 +56,24 @@ define(['app'], function (app) {
         employeeFactory.getEmployee = function (id) {
             //then does not unwrap data so must go through .data property
             //success unwraps data automatically (no need to call .data property)
-            return $http.get(serviceBase + 'employeeById/' + id).then(function (results) {
-               return results.data;
-            });
+            //return $http.get(serviceBase + 'employeeById/' + id).then(function (results) {
+            //   return results.data;
+            //});
+            
+
+           return $http({ method: 'GET', url: serviceBase + 'employeeById/' + id }).
+    success(function (data, status, headers, config) {
+        alert(status);
+        // this callback will be called asynchronously
+        // when the response is available
+       // alert(headers);
+        return data;
+    }).
+    error(function (data, status, headers, config) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+        return data;
+    });
         };
 
    
@@ -68,7 +83,8 @@ define(['app'], function (app) {
             resource += (arguments.length == 3) ? buildPagingUri(pageIndex, pageSize) : '';
             return $http.get(serviceBase + resource).then(function (data) {
                 return {
-                    totalRecords: parseInt(data.headers('X-InlineCount')),
+                    totalRecords:20,
+                    //totalRecords: parseInt(data.headers('X-InlineCount')),
                     results: data.data
                 };
             });
